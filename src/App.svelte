@@ -7,8 +7,9 @@
   let characters = [];
   let episodes = [];
   let locations = [];
-  let page = 1;
-  let section = "characters"; // characters, episodes, locations
+  let section; // characters, episodes, locations
+
+  let page, count, pages; // cantidad y páginas
 
   async function loadCharacters() {
     const response = await fetch(
@@ -16,6 +17,8 @@
     );
     const data = await response.json();
     characters = data.results;
+    count= data.info.count;
+    pages = data.info.pages;
   }
   async function loadEpisodes() {
     const response = await fetch(
@@ -23,6 +26,8 @@
     );
     const data = await response.json();
     episodes = data.results;
+    count= data.info.count;
+    pages = data.info.pages;
   }
   async function loadLocations() {
     const response = await fetch(
@@ -30,8 +35,9 @@
     );
     const data = await response.json();
     locations = data.results;
+    count= data.info.count;
+    pages = data.info.pages;
   }
-
 
   function nextPage() {
     page++;
@@ -59,21 +65,24 @@
     section=sec;
     nextPage();
   }
+
+  handleSection("characters");
 </script>
 
 <main class="container">
   <h1 class="title">Rick And Morty Svelte ({section})</h1>
 
-  <ul class="btns">
-    <li on:click={()=>handleSection("characters")}>Personajes</li>
-    <li on:click={()=>handleSection("episodes")}>Episodios</li>
-    <li on:click={()=>handleSection("locations")}>Lugares</li>
-  </ul>
+  <div class="btns">
+    <button class="btn" on:click={()=>handleSection("characters")}>Personajes </button>
+    <button class="btn" on:click={()=>handleSection("episodes")}>Episodios </button>
+    <button class="btn" on:click={()=>handleSection("locations")}>Lugares </button>
+  </div>
 
 
   <div class="btns">
     <button on:click={previousPage} disabled={page === 1}>Previous</button>
-    <button class="btn" on:click={nextPage}>Next</button>
+    <div>Cant: {count} / Página: {page}/{pages}</div>
+    <button class="btn" on:click={nextPage} disabled={page === pages}>Next</button>
   </div>
 
   <div class="grid">

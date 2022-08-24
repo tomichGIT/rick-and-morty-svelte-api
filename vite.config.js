@@ -4,5 +4,5 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svelte()],
-  base: '/svelte-rick-and-morty/'
+  base: '/rick-and-morty-svelte-api/'
 })
